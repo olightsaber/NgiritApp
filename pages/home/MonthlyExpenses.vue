@@ -1,6 +1,9 @@
 <template>
   <v-container>
     <v-row>
+      <user-profile></user-profile>
+    </v-row>
+    <v-row>
       <v-card class="mx-auto" flat>
         <v-navigation-drawer width="100%" permanent>
           <v-list>
@@ -12,7 +15,7 @@
               <v-list-item>
                 <v-list-item-content>
                   <v-list-item-title class="text-h6">
-                    Name: {{ user }}
+                    Name: {{ user.displayName }}
                   </v-list-item-title>
                   <v-list-item-subtitle>{{ user.email }}</v-list-item-subtitle>
                 </v-list-item-content>
@@ -70,11 +73,13 @@
   </v-container>
 </template>
 <script>
-import { getFirestore, collection, getDocs } from '@firebase/firestore';
+// import { getFirestore, collection, getDocs } from '@firebase/firestore';
+import { getFirestore, doc, onSnapshot, collection } from "firebase/firestore";
 import AddSpending from '../../components/AddSpending.vue';
+import UserProfile from '../../components/UserProfile.vue';
 import { mapState } from 'vuex';
 export default {
-  components: { AddSpending },
+  components: { AddSpending, UserProfile },
   data: () => ({
     selectedItem: 1,
     result: null,
@@ -109,27 +114,30 @@ export default {
 					message: err.message
 				}
 			}
-		}
+		},
+    // getting data (real time)
+    fetchData() {
+      const db = getFirestore();
+    }
   },
   mounted() {
     // init service
-    const db = getFirestore();
-
+    // const db = getFirestore();
     // collection ref 
-    const colRef = collection(db, 'dev-spendings');
-
-    // get collection data
-    getDocs(colRef)
-      .then((res) => {
-        let spendings = []
-        res.docs.forEach((doc) => {
-          spendings.push({ ...doc.data(), id: doc.id})
-        })
-        this.result = spendings
-      })
-      .catch(err => {
-        console.log(err.message);
-      })
+    // const colRef = collection(db, 'dev-spendings');
+    // // get collection data
+    // getDocs(colRef)
+    //   .then((res) => {
+    //     let spendings = []
+    //     res.docs.forEach((doc) => {
+    //       spendings.push({ ...doc.data(), id: doc.id})
+    //     })
+    //     this.result = spendings
+    //   })
+    //   .catch(err => {
+    //     console.log(err.message);
+    //   })
+    // this.fetchData();
   }
 }
 </script>

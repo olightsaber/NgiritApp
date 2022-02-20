@@ -110,31 +110,28 @@ export default {
 			this.isProcessing = false
 		},
 		signIn () {
-      try {
-        this.error = ''
-        this.isProcessing = true
-        this.$fire
-          .auth
-          .signInWithEmailAndPassword(this.email, this.password)
-					.then((userCredential) => {
-						const data = userCredential.user;
-						console.log(data, 'data');
-					})
-          .catch((error) => {
-            this.isProcessing = false
-            this.error = {
-              message: error.message
-            }
-          })
-      } catch (err) {
-        this.error = {
-          message: err.message
-        }
-      }
+			try {
+				this.error = ''
+				this.isProcessing = true
+				this.$fire
+				.auth
+				.signInWithEmailAndPassword(this.email, this.password)
+				.catch((error) => {
+					this.isProcessing = false
+					this.error = {
+						message: error.message
+					}
+				})
+			} catch (err) {
+				this.error = {
+				message: err.message
+			}
+		}
     }
 	},
 	mounted() {
-
+		// check if store already generate user data
+		if (this.user) this.$router.push('/')
 	}
 }
 </script>
