@@ -69,6 +69,12 @@ export default {
           title: 'About',
           to: '/about'
         },
+        {
+          icoon: 'mdi-logout-variant',
+          color: 'blue lighten-6',
+          title: 'Log Out',
+          to: '/logout'
+        }
       ],
       miniVariant: false,
       right: true,

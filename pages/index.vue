@@ -8,10 +8,10 @@
       </v-row>
       <v-row>
         <template>
-          <v-simple-table fixed-header dense>
+          <v-simple-table fixed-header class="simpleTable">
             <template v-slot:default>
               <thead>
-                <tr>
+                <tr class="simpleTable__tr">
                   <th class="text-left">
                     Time
                   </th>
@@ -25,28 +25,21 @@
               </thead>
               <tbody>
                 <tr v-for="item in result" :key="item.id" >
-                  <td>{{ item.created_at }}</td>
-                  <td>{{ item.label }}</td>
-                  <td>{{ item.value }}</td>
+                  <td>{{ item.createdAt | dtFormatHour }} </td>
+                  <td class="item__label">{{ item.label }}</td>
+                  <td>
+                    <v-chip :color="getColor(item.value)" dark>
+                      {{ item.value | digitGrouping }}
+                    </v-chip>
+                  </td>
                 </tr>
               </tbody>
             </template>
           </v-simple-table>
         </template>
-        <!-- <v-data-table
-          :headers="headers"
-          :items="result"
-          class="elevation-1"
-          dense
-        >
-          <template v-slot:item.label="{ item }">
-            <v-chip :color="getColor(item.value)" dark>
-              {{ item.value }}
-            </v-chip>
-          </template>
-        </v-data-table> -->
       </v-row>
     </v-main>
+    <add-spending></add-spending>
   </v-container>
 </template>
 <script>
@@ -64,28 +57,6 @@ export default {
             value: 'name',
           },
           { text: '', value: 'label' }
-        ],
-        desserts: [
-          {
-            name: 'Frozen Yogurt',
-            calories: 159
-          },
-          {
-            name: 'Ice cream sandwich',
-            calories: 237
-          },
-          {
-            name: 'Eclair',
-            calories: 262
-          },
-          {
-            name: 'Cupcake',
-            calories: 305
-          },
-          {
-            name: 'Gingerbread',
-            calories: 356
-          }
         ],
         isLoading: true,
         result: []
@@ -129,8 +100,8 @@ export default {
   },
   methods: {
     getColor (item) {
-      if (item > 400) return 'red'
-      else if (item > 200) return 'orange'
+      if (item > 50000) return 'red'
+      else if (item > 25000) return 'orange'
       else return 'green'
     }
   },
@@ -139,3 +110,15 @@ export default {
   }
 }
 </script>
+
+.<style lang="scss" scoped>
+.simpleTable {
+  width: 100%;
+  text-align: center;
+}
+.item__label {
+  text-transform: capitalize;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 24px;
+}
+</style>

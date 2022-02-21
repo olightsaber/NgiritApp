@@ -43,8 +43,8 @@
 							</v-card-text>
 							<v-card-actions>
 								<v-spacer />
-								<v-btn :loading="isProcessing" color="primary" dark="dark" @click.prevent="submit">
-									Kirim
+								<v-btn :loading="isProcessing" color="primary" dark="dark" @click.prevent="signIn">
+									Masuk
 								</v-btn>
 							</v-card-actions>
 							<v-card-actions class="justify-end">
@@ -58,12 +58,12 @@
 				</v-dialog>
 			</v-col>
 			
-			<v-icon>
+			<!-- <v-icon>
 				mdi-arrow-expand-horizontal
-			</v-icon>
+			</v-icon> -->
 			
 			<!-- Sign Up [email] -->
-				<sign-up></sign-up>
+				<!-- <sign-up></sign-up> -->
 			<!-- [end] Sign Up [email] -->
 		</v-row>
 		<!-- [end] Login UI -->
@@ -95,13 +95,10 @@ export default {
 	},
 	watch: {
 		user(val) {
-			if (val) { this.$router.push('/home/MonthlyExpenses')}
+			if (val) { this.$router.push('/')}
 		}
 	},
 	methods: {
-		submit() {
-			this.signIn();
-		},
 		reset() {
 			this.dialogCreate = false;
 			this.error = false;
@@ -132,6 +129,7 @@ export default {
 	mounted() {
 		// check if store already generate user data
 		if (this.user) this.$router.push('/')
+    console.log('cek done');
 	}
 }
 </script>

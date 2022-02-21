@@ -23,7 +23,7 @@
           <v-btn
             color="primary"
             nuxt
-            to="/home/Expenses"
+            to="/"
           >
             Continue
           </v-btn>

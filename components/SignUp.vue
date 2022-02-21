@@ -1,18 +1,16 @@
 <template>
 	<v-col cols="auto">
 		<v-dialog transition="dialog-top-transition" max-width="600" >
-			<template v-slot:activator="{ on, attrs }">
+			<template v-slot:activator="{ on, signUp }">
 				<v-btn
 					color="primary"
-					v-bind="attrs"
+					v-bind="signUp"
 					v-on="on"
 				>Sign Up</v-btn>
 			</template>
 			<template v-slot:default="dialog">
 				<v-card>
-					<v-toolbar
-						color="primary"
-						dark
+					<v-toolbar color="primary" dark
 					>Howdy, lets register who are you.. </v-toolbar>
 					<v-card-text>
 						<v-container>
@@ -62,10 +60,7 @@
 						</v-btn>
 					</v-card-actions>
 					<v-card-actions class="justify-end">
-						<v-btn
-							text
-							@click="dialog.value = false"
-						>Close</v-btn>
+						<v-btn text @click="dialog.value = false">Close</v-btn>
 					</v-card-actions>
 				</v-card>
 			</template>
@@ -104,7 +99,8 @@ export default {
 	},
 	watch: {
 		user(val) {
-			if (val) { this.$router.push('/home/MonthlyExpenses')}
+      console.log(val, 'val');
+			if (val) { this.$router.push('/about')}
 		}
 	},
 	methods: {
@@ -135,6 +131,9 @@ export default {
 				
 			}
 		}
-	}
+	},
+  mounted() {
+    console.log('mounted sign up');
+  }
 }
 </script>
