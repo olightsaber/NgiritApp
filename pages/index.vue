@@ -2,8 +2,8 @@
   <v-container>
     <v-main style="paddingTop: 0">
       <v-row>
-        <v-subheader>
-          Catatan Pengeluaran {{ result.label }}
+        <v-subheader style="paddingLeft: 0">
+          Pengeluaran bulan - {{ monthOf | dtFormatDate }}
         </v-subheader>
       </v-row>
       <v-row>
@@ -25,7 +25,7 @@
               </thead>
               <tbody>
                 <tr v-for="item in result" :key="item.id" >
-                  <td>{{ item.createdAt | dtFormatHour }} </td>
+                  <td>{{ item.createdAt | dtFormatDate }} </td>
                   <td class="item__label">{{ item.label }}</td>
                   <td>
                     <v-chip :color="getColor(item.value)" dark>
@@ -59,14 +59,15 @@ export default {
           { text: '', value: 'label' }
         ],
         isLoading: true,
-        result: []
+        result: [],
+        monthOf: ''
   }),
   fetch () {
     const { nodeEnv } = this.$config
     const collection = nodeEnv === 'development' ? 'dev-spendings' : 'spendings'
     const now = new Date()
     const start = getUnixTime(startOfMonth(now))
-
+    this.monthOf = start
     this.$fire
         .firestore
         .collection(collection)
@@ -103,10 +104,11 @@ export default {
       if (item > 50000) return 'red'
       else if (item > 25000) return 'orange'
       else return 'green'
-    }
+    },
+
   },
   mounted() {
-    console.log(this.result);
+    // console.log(this.result);
   }
 }
 </script>
@@ -114,7 +116,6 @@ export default {
 .<style lang="scss" scoped>
 .simpleTable {
   width: 100%;
-  text-align: center;
 }
 .item__label {
   text-transform: capitalize;
