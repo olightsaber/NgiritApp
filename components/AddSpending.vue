@@ -14,15 +14,12 @@
         </template>
         <template v-slot:default="dialog">
           <v-card>
-            <v-toolbar
-              color="primary"
-              dark
-            >Masukan angka pengeluaranmu</v-toolbar>
+            <v-toolbar color="primary" dark>Masukan angka pengeluaranmu</v-toolbar>
             <v-card-text>
 							<v-container>
 								<v-col class="mx-2">
 									<v-text-field v-model.trim="formItem" :disabled="isProcessing" autofocus label="Barang/Jasa" type="text" />
-									<v-text-field v-model.trim="formValue" :disabled="isProcessing" label="Harga" type="number" />
+									<v-text-field v-model.trim="formValue" :disabled="isProcessing" label="Harga" type="number" prefix="Rp." />
 								</v-col>
 							</v-container>
             </v-card-text>
@@ -33,10 +30,7 @@
 							</v-btn>
 						</v-card-actions>
             <v-card-actions class="justify-end">
-              <v-btn
-                text
-                @click="dialog.value = false"
-              >Close</v-btn>
+              <v-btn class="closeAddSpending" text @click="dialog.value = false">Close</v-btn>
             </v-card-actions>
           </v-card>
         </template>
@@ -57,7 +51,6 @@ export default {
 	}),
 	methods: {
     reset() {
-      this.dialogCreate = false
       this.error = false
       this.formItem = ''
       this.formValue = 0
@@ -65,9 +58,12 @@ export default {
     },
     submit() {
       try {
+        const _self = this;
         const { nodeEnv } = this.$config
         const collection = nodeEnv === 'development' ? 'dev-spendings' : 'spendings'
         const now = getUnixTime(new Date());
+        const exit = document.getElementsByClassName('closeAddSpending')[0];
+
         this.isProcessing = true;
         this.$fire
           .firestore
@@ -81,7 +77,8 @@ export default {
           })
           .then((docRef) => {
             console.log(docRef, 'docref');
-            this.reset()
+            _self.reset();
+            exit.click()
           })
           .catch((error) => {
             console.log(error.message);

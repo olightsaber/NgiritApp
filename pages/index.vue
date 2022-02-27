@@ -21,16 +21,22 @@
                   <th class="text-left">
                     Harga
                   </th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="item in result" :key="item.id" >
+                <tr v-for="item in result" :key="item.id" :class="item.id" >
                   <td>{{ item.createdAt | dtFormatDate }} </td>
                   <td class="item__label">{{ item.label }}</td>
                   <td>
                     <v-chip :color="getColor(item.value)" dark>
                       {{ item.value | digitGrouping }}
                     </v-chip>
+                  </td>
+                  <td>
+                    <v-icon :ref="item.id" color="white" @click.prevent="deleting(item.id)">
+                      mdi-trash-can-outline
+                    </v-icon>
                   </td>
                 </tr>
               </tbody>
@@ -63,6 +69,7 @@ export default {
         monthOf: ''
   }),
   fetch () {
+    console.log('fetch jalan weh');
     const { nodeEnv } = this.$config
     const collection = nodeEnv === 'development' ? 'dev-spendings' : 'spendings'
     const now = new Date()
@@ -95,6 +102,9 @@ export default {
                     value
                   })
                 }
+              } else if (change.type === 'removed') {
+                let target = document.getElementsByClassName(change.doc.id)[0];
+                target.remove();
               }
             })
         })
@@ -105,10 +115,23 @@ export default {
       else if (item > 25000) return 'orange'
       else return 'green'
     },
+    deleting(item) {
+      const _self = this;
+      const { nodeEnv } = this.$config
+      const db = this.$fire.firestore
+      const collection = nodeEnv === 'development' ? 'dev-spendings' : 'spendings'
 
+      try {
+        db.collection(collection).doc(item).delete().then(() => {
+          console.log('deletion succeed');
+        })
+      } catch (err) {
+        console.log(err.message);
+      }
+    }
   },
   mounted() {
-    // console.log(this.result);
+      const db = this.$fire.firestore
   }
 }
 </script>
