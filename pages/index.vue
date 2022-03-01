@@ -12,13 +12,13 @@
             <template v-slot:default>
               <thead>
                 <tr class="simpleTable__tr">
-                  <th class="text-left">
+                  <th class="text-center">
                     Time
                   </th>
-                  <th class="text-left">
+                  <th class="text-center">
                     Name
                   </th>
-                  <th class="text-left">
+                  <th class="text-center">
                     Harga
                   </th>
                   <th></th>
@@ -26,14 +26,16 @@
               </thead>
               <tbody>
                 <tr v-for="item in result" :key="item.id" :class="item.id" >
-                  <td>{{ item.createdAt | dtFormatDate }} </td>
-                  <td class="item__label">{{ item.label }}</td>
-                  <td>
+                  <td class="text-center">
+                    {{ item.createdAt | dtFormatDate }}
+                  </td>
+                  <td class="item__label text-center">{{ item.label }}</td>
+                  <td class="text-center">
                     <v-chip :color="getColor(item.value)" dark>
                       {{ item.value | digitGrouping }}
                     </v-chip>
                   </td>
-                  <td>
+                  <td class="text-center">
                     <v-icon :ref="item.id" color="white" @click.prevent="deleting(item.id)">
                       mdi-trash-can-outline
                     </v-icon>
@@ -69,7 +71,6 @@ export default {
         monthOf: ''
   }),
   fetch () {
-    console.log('fetch jalan weh');
     const { nodeEnv } = this.$config
     const collection = nodeEnv === 'development' ? 'dev-spendings' : 'spendings'
     const now = new Date()
@@ -116,11 +117,9 @@ export default {
       else return 'green'
     },
     deleting(item) {
-      const _self = this;
       const { nodeEnv } = this.$config
       const db = this.$fire.firestore
       const collection = nodeEnv === 'development' ? 'dev-spendings' : 'spendings'
-
       try {
         db.collection(collection).doc(item).delete().then(() => {
           console.log('deletion succeed');
