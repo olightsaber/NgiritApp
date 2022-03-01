@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/example/public_html/ngirit/
-    - /bin/cp -R $DEPLOYPATH
+    - export DEPLOYPATH=/home/u1559528/public_html/ngirit
+    - /bin/cp -R * $DEPLOYPATH
